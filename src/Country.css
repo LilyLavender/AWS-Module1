@@ -1,0 +1,18 @@
+.country {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: 3px solid black;
+    border-radius: 5px;
+    width: fit-content;
+
+    button {
+        margin-left: 5em;
+    }
+
+    h2 {
+        border-bottom: 1px solid black;
+    }
+
+    .country-content {
+        margin: 1em;
+    }
+}
