@@ -1,0 +1,10 @@
+.medal-container {
+    margin: .3em;
+    display: flex;
+    gap: 1em;
+}
+
+.medal-container > * {
+    height: fit-content;
+    margin: auto;
+}

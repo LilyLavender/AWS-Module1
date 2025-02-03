@@ -4,15 +4,20 @@
     border-radius: 5px;
     width: fit-content;
 
-    button {
-        margin-left: 5em;
-    }
-
-    h2 {
-        border-bottom: 1px solid black;
-    }
-
     .country-content {
-        margin: 1em;
+        .country-header {
+            padding: 1em;
+            background-color: lightgrey;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom: 3px solid black;
+            display: flex;
+            gap: 1em;
+        }
+
+        .country-header > * {
+            height: fit-content;
+            margin: auto;
+        }
     }
 }

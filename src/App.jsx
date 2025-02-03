@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Country } from './Country.jsx';
 import './App.css';
 
 function App() {
   const [countries, setCountries] = useState([
-    { id: 1, name: 'United States', gold: 2 },
-    { id: 2, name: 'China', gold: 3 },
-    { id: 3, name: 'France', gold: 0 },
+    { id: 1, name: 'United States', gold: 2, silver: 1, bronze: 0 },
+    { id: 2, name: 'China', gold: 3, silver: 0, bronze: 2 },
+    { id: 3, name: 'France', gold: 0, silver: 2, bronze: 3 },
   ]);
 
-  const updateMedals = (id) => {
+  const medals = useRef([
+    { id: 1, name: "gold" },
+    { id: 2, name: "silver" },
+    { id: 3, name: "bronze" },
+  ]);
+
+  const updateMedals = (id, medalType) => {
     setCountries(countries.map(country => 
-      country.id === id ? { ...country, gold: country.gold + 1 } : country
+      country.id === id ? { ...country, [medalType]: country[medalType] + 1 } : country
     ));
   };
 
@@ -26,7 +32,8 @@ function App() {
           key={country.id} 
           id={country.id}
           name={country.name} 
-          gold={country.gold} 
+          medals={medals.current}
+          medalCounts={{ gold: country.gold, silver: country.silver, bronze: country.bronze }}
           increaseMedals={updateMedals} 
           onDelete={deleteCountry} 
         />
