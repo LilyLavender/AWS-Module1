@@ -15,9 +15,17 @@ function App() {
     { id: 3, name: "bronze" },
   ]);
 
-  const updateMedals = (id, medalType) => {
+  const handleIncrement = (id, medalType) => {
     setCountries(countries.map(country => 
       country.id === id ? { ...country, [medalType]: country[medalType] + 1 } : country
+    ));
+  };
+
+  const handleDecrement = (id, medalType) => {
+    setCountries(countries.map(country => 
+      country.id === id && country[medalType] > 0 
+        ? { ...country, [medalType]: country[medalType] - 1 } 
+        : country
     ));
   };
 
@@ -25,19 +33,28 @@ function App() {
     setCountries(countries.filter(country => country.id !== id));
   };
 
+  const totalMedals = countries.reduce((total, country) => {
+    return total + country.gold + country.silver + country.bronze;
+  }, 0);
+
   return (
-    <div className="country-container">
-      {countries.map(country => (
-        <Country 
-          key={country.id} 
-          id={country.id}
-          name={country.name} 
-          medals={medals.current}
-          medalCounts={{ gold: country.gold, silver: country.silver, bronze: country.bronze }}
-          increaseMedals={updateMedals} 
-          onDelete={deleteCountry} 
-        />
-      ))}
+    <div>
+      <h1>Olympic Medals {totalMedals}</h1>
+      <div className="country-container">
+        {countries.map(country => (
+          <Country 
+            key={country.id} 
+            id={country.id}
+            name={country.name} 
+            medals={medals.current}
+            medalCounts={{ gold: country.gold, silver: country.silver, bronze: country.bronze }}
+            totalMedals={country.gold + country.silver + country.bronze}
+            increaseMedals={handleIncrement}
+            decreaseMedals={handleDecrement}
+            onDelete={deleteCountry} 
+          />
+        ))}
+      </div>
     </div>
   );
 }
