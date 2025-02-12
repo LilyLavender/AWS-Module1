@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Country } from './Country.jsx';
+import { NewCountry } from './NewCountry.jsx';
 import './App.css';
 
 function App() {
@@ -33,12 +34,18 @@ function App() {
     setCountries(countries.filter(country => country.id !== id));
   };
 
+  const addCountry = (name) => {
+    if (name.trim()) {
+      setCountries([...countries, { id: Date.now(), name, gold: 0, silver: 0, bronze: 0 }]);
+    }
+  };
+
   const totalMedals = countries.reduce((total, country) => {
     return total + country.gold + country.silver + country.bronze;
   }, 0);
 
   return (
-    <div>
+    <div className='content'>
       <h1>Olympic Medals {totalMedals}</h1>
       <div className="country-container">
         {countries.map(country => (
@@ -55,6 +62,7 @@ function App() {
           />
         ))}
       </div>
+      <NewCountry onAdd={addCountry} />
     </div>
   );
 }
