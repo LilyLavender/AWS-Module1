@@ -1,43 +1,36 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import { Country } from './Country.jsx';
 import { NewCountry } from './NewCountry.jsx';
 import './App.css';
 
+const API_URL = 'https://medals-lss-dqffe8fsgcfsh2bf.centralus-01.azurewebsites.net/api/country';
+
 function App() {
-  const [countries, setCountries] = useState([
-    { id: 1, name: 'United States', gold: 2, silver: 1, bronze: 0 },
-    { id: 2, name: 'China', gold: 3, silver: 0, bronze: 2 },
-    { id: 3, name: 'France', gold: 0, silver: 2, bronze: 3 },
-  ]);
+  const [countries, setCountries] = useState([]);
 
-  const medals = useRef([
-    { id: 1, name: "gold" },
-    { id: 2, name: "silver" },
-    { id: 3, name: "bronze" },
-  ]);
+  useEffect(() => {
+    axios.get(API_URL)
+      .then(response => setCountries(response.data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
-  const handleIncrement = (id, medalType) => {
+  const updateMedals = (id, type, increment) => {
     setCountries(countries.map(country => 
-      country.id === id ? { ...country, [medalType]: country[medalType] + 1 } : country
-    ));
-  };
-
-  const handleDecrement = (id, medalType) => {
-    setCountries(countries.map(country => 
-      country.id === id && country[medalType] > 0 
-        ? { ...country, [medalType]: country[medalType] - 1 } 
-        : country
+      country.id === id ? { ...country, [type]: country[type] + (increment ? 1 : -1) } : country
     ));
   };
 
   const deleteCountry = (id) => {
-    setCountries(countries.filter(country => country.id !== id));
+    axios.delete(`${API_URL}/${id}`)
+      .then(() => setCountries(countries.filter(country => country.id !== id)))
+      .catch(error => console.error('Error deleting country:', error));
   };
 
   const addCountry = (name) => {
-    if (name.trim()) {
-      setCountries([...countries, { id: Date.now(), name, gold: 0, silver: 0, bronze: 0 }]);
-    }
+    axios.post(API_URL, { name, gold: 0, silver: 0, bronze: 0 })
+      .then(response => setCountries([...countries, response.data]))
+      .catch(error => console.error('Error adding country:', error));
   };
 
   const totalMedals = countries.reduce((total, country) => {
@@ -51,14 +44,9 @@ function App() {
         {countries.map(country => (
           <Country 
             key={country.id} 
-            id={country.id}
-            name={country.name} 
-            medals={medals.current}
-            medalCounts={{ gold: country.gold, silver: country.silver, bronze: country.bronze }}
-            totalMedals={country.gold + country.silver + country.bronze}
-            increaseMedals={handleIncrement}
-            decreaseMedals={handleDecrement}
-            onDelete={deleteCountry} 
+            country={country} 
+            onDelete={deleteCountry}
+            onMedalChange={updateMedals}
           />
         ))}
       </div>
