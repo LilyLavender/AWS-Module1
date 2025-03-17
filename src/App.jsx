@@ -23,9 +23,9 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 
 function App() {
   const [appearance, setAppearance] = useState("dark");
-  const apiEndpoint = "https://medalsapi.azurewebsites.net/jwtapi/country";
-  const hubEndpoint = "https://medalsapi.azurewebsites.net/medalsHub";
-  const userEndpoint = "https://jwtswagger.azurewebsites.net/api/user/login";
+  const apiEndpoint = "https://medals-lss-dqffe8fsgcfsh2bf.centralus-01.azurewebsites.net/jwtapi/country";
+  const hubEndpoint = "https://medals-lss-dqffe8fsgcfsh2bf.centralus-01.azurewebsites.net/medalsHub";
+  const userEndpoint = "https://medals-lss-dqffe8fsgcfsh2bf.centralus-01.azurewebsites.net/api/user/login";
   const [connection, setConnection] = useState(null);
   const [countries, setCountries] = useState([]);
   const [user, setUser] = useState({
